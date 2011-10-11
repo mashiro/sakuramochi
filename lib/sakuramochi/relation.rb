@@ -1,26 +1,39 @@
 require 'sakuramochi/predicate'
+require 'active_support/concern'
 
 module Sakuramochi
-
   module Relation
-    def self.extended(base)
-      base.class_eval do
-        def build_where_with_predicate(opts, other = []) 
-          p opts
-          if opts.is_a?(Hash)
-            opts.each do |key, value|
-              name, pred = Predicate.detect(key)
-              p name, pred
-            end 
-            opts = ['name = ?', :test]
-            build_where_without_predicate opts, other
-          else
-            build_where_without_predicate opts, other
-          end 
-        end 
-        alias_method_chain :build_where, :predicate
-      end 
-    end 
-  end 
+    extend ActiveSupport::Concern
 
+    included do
+      module_eval do
+
+        def where_with_predicate(opts, *rest)
+          return self if opts.blank?
+
+          where_value = build_where(opts, rest)
+          return self if where_value.blank?
+
+          relation = clone
+          relation.where_values += where_value
+          relation
+        end 
+        alias_method_chain :where, :predicate
+
+        def having_with_predicate(opts, *rest)
+          return self if opts.blank?
+
+          having_value = build_where(opts, rest)
+          return self if having_value.blank?
+
+          relation = clone
+          relation.having_values += having_value
+          relation
+        end
+        alias_method_chain :having, :predicate
+
+      end
+    end
+
+  end 
 end

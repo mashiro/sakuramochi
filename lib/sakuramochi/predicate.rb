@@ -15,8 +15,8 @@ module Sakuramochi
       formatter ? formatter.call(value) : value
     end 
 
-    def validate(values)
-      values.select { |value| validator.call(value) }.any?
+    def validate(value)
+      validator.call(value)
     end 
 
     def self.names
@@ -24,7 +24,7 @@ module Sakuramochi
     end 
 
     def self.names_by_decreasing_length
-      names.sort { |a,b| b.length <=> a.length }
+      names.sort { |a, b| b.length <=> a.length }
     end 
 
     def self.detect(attr)
