@@ -1,3 +1,5 @@
+require 'sakuramochi/predicate'
+
 module Sakuramochi
 
   module Relation

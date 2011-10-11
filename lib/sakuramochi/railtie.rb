@@ -1,10 +1,9 @@
 require 'rails'
+require 'sakuramochi/config'
+require 'sakuramochi/predicate'
+require 'sakuramochi/relation'
 
 module Sakuramochi
-  autoload :Configuration, 'sakuramochi/config'
-  autoload :Predicate, 'sakuramochi/predicate'
-  autoload :Relation, 'sakuramochi/relation'
-
   class Railtie < Rails::Railtie
     initializer 'sakuramochi.initialize' do
       ActiveSupport.on_load(:active_record) do

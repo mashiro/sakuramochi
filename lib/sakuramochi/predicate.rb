@@ -1,3 +1,5 @@
+require 'sakuramochi/config'
+
 module Sakuramochi
   class Predicate
     attr_reader :name, :arel_predicate, :formatter, :validator
