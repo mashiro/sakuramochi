@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = "sakuramochi"
-  s.version = "0.0.0"
+  s.version = "0.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["mashiro"]
@@ -27,10 +27,15 @@ Gem::Specification.new do |s|
     "lib/sakuramochi.rb",
     "lib/sakuramochi/config.rb",
     "lib/sakuramochi/predicate.rb",
+    "lib/sakuramochi/predicate_builder.rb",
     "lib/sakuramochi/railtie.rb",
     "lib/sakuramochi/relation.rb",
+    "sakuramochi.gemspec",
+    "spec/sakuramochi/config_spec.rb",
+    "spec/sakuramochi/predicate_spec.rb",
     "spec/sakuramochi_spec.rb",
-    "spec/spec_helper.rb"
+    "spec/spec_helper.rb",
+    "spec/support/schema.rb"
   ]
   s.homepage = "http://github.com/mashiro/sakuramochi"
   s.licenses = ["MIT"]
@@ -43,12 +48,14 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<rails>, [">= 3.0.0"])
+      s.add_development_dependency(%q<sqlite3>, ["~> 1.3.4"])
       s.add_development_dependency(%q<rspec>, ["~> 2.6.0"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 1.6.4"])
       s.add_development_dependency(%q<rcov>, [">= 0"])
     else
       s.add_dependency(%q<rails>, [">= 3.0.0"])
+      s.add_dependency(%q<sqlite3>, ["~> 1.3.4"])
       s.add_dependency(%q<rspec>, ["~> 2.6.0"])
       s.add_dependency(%q<bundler>, ["~> 1.0.0"])
       s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
@@ -56,6 +63,7 @@ Gem::Specification.new do |s|
     end
   else
     s.add_dependency(%q<rails>, [">= 3.0.0"])
+    s.add_dependency(%q<sqlite3>, ["~> 1.3.4"])
     s.add_dependency(%q<rspec>, ["~> 2.6.0"])
     s.add_dependency(%q<bundler>, ["~> 1.0.0"])
     s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
