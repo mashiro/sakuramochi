@@ -1,3 +1,5 @@
+require 'rails'
+
 module Sakuramochi
   autoload :Configuration, 'sakuramochi/config'
   autoload :Predicate, 'sakuramochi/predicate'
