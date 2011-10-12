@@ -13,11 +13,13 @@ module Sakuramochi
 
     def convert(value)
       return value unless converter
-      [value].flatten.map { |v| converter.call(v) }
+      values = value.is_a?(Enumerable) ? value.to_a : [value]
+      values.map { |v| converter.call(v) }
     end 
 
     def validate(value)
-      [value].flatten.select { |v| validator.call(v) }.any?
+      values = value.is_a?(Enumerable) ? value.to_a : [value]
+      values.select { |v| validator.call(v) }.any?
     end 
 
     def self.names
