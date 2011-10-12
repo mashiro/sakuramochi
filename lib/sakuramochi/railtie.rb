@@ -2,7 +2,6 @@ require 'rails'
 require 'sakuramochi/config'
 require 'sakuramochi/predicate'
 require 'sakuramochi/predicate_builder'
-require 'sakuramochi/relation'
 
 module Sakuramochi
   class Railtie < Rails::Railtie
@@ -13,7 +12,6 @@ module Sakuramochi
     end 
 
     def self.initialize
-      ActiveRecord::Relation.send(:include, Sakuramochi::Relation)
       ActiveRecord::PredicateBuilder.send(:include, Sakuramochi::PredicateBuilder)
     end
   end 

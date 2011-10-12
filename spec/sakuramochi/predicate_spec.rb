@@ -1,7 +1,5 @@
 require 'spec_helper'
 
-Sakuramochi::Railtie.initialize
-
 describe Sakuramochi::Predicate do
   before do
     User.create :name => "foo"
