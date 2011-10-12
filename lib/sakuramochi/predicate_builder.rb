@@ -28,54 +28,61 @@ module Sakuramochi
               table = Arel::Table.new(table_name, engine)
             end 
 
-            column_name = column.to_s
-            column_name, predicate = Predicate.detect(column_name)
+            column_name, predicate = Predicate.detect(column.to_s)
+            attribute = table[column_name.to_sym]
+
             if predicate
-              attribute = table[column_name]
-              if predicate.validate(value)
-                attribute.send(predicate.arel_predicate, predicate.format(value))
-              else
-                nil
-              end
+              build_attribute_with_predicate(attribute, value, predicate)
             else
-              attribute = table[column.to_sym]
-
-              case value
-              when ActiveRecord::Relation
-                value = value.select(value.klass.arel_table[value.klass.primary_key]) if value.select_values.empty?
-                attribute.in(value.arel.ast)
-              when Array, ActiveRecord::Associations::CollectionProxy
-                values = value.to_a.map { |x|
-                  x.is_a?(ActiveRecord::Base) ? x.id : x
-                }
-
-                if values.include?(nil)
-                  values = values.compact
-                  if values.empty?
-                    attribute.eq nil
-                  else
-                    attribute.in(values.compact).or attribute.eq(nil)
-                  end
-                else
-                  attribute.in(values)
-                end
-
-              when Range, Arel::Relation
-                attribute.in(value)
-              when ActiveRecord::Base
-                attribute.eq(value.id)
-              when Class
-                # FIXME: I think we need to deprecate this behavior
-                attribute.eq(value.name)
-              else
-                attribute.eq(value)
-              end
+              build_attribute(attribute, value)
             end
           end
         end
 
         predicates.flatten.compact
       end
+
+      def build_attribute_with_predicate(attribute, value, predicate)
+        if predicate.validate(value)
+          attribute.send(predicate.arel_predicate, predicate.format(value))
+        else
+          ''
+        end
+      end
+
+      def build_attribute(attribute, value)
+        case value
+        when ActiveRecord::Relation
+          value = value.select(value.klass.arel_table[value.klass.primary_key]) if value.select_values.empty?
+          attribute.in(value.arel.ast)
+        when Array, ActiveRecord::Associations::CollectionProxy
+          values = value.to_a.map { |x|
+            x.is_a?(ActiveRecord::Base) ? x.id : x
+          }
+
+          if values.include?(nil)
+            values = values.compact
+            if values.empty?
+              attribute.eq nil
+            else
+              attribute.in(values.compact).or attribute.eq(nil)
+            end
+          else
+            attribute.in(values)
+          end
+
+        when Range, Arel::Relation
+          attribute.in(value)
+        when ActiveRecord::Base
+          attribute.eq(value.id)
+        when Class
+          # FIXME: I think we need to deprecate this behavior
+          attribute.eq(value.name)
+        else
+          attribute.eq(value)
+        end
+      end
     end
+
   end
 end
