@@ -44,7 +44,12 @@ module Sakuramochi
 
       def build_attribute_with_predicate(attribute, value, predicate)
         if predicate.validate(value)
-          attribute.send(predicate.arel_predicate, predicate.format(value))
+          if predicate.converter
+            attribute.send(predicate.arel_predicate, predicate.convert(value))
+          else
+            relation = build_attribute(attribute, value)
+            attribute.send(predicate.arel_predicate, relation.right)
+          end
         else
           ''
         end

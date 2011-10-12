@@ -2,21 +2,22 @@ require 'sakuramochi/config'
 
 module Sakuramochi
   class Predicate
-    attr_reader :name, :arel_predicate, :formatter, :validator
+    attr_reader :name, :arel_predicate, :converter, :validator
 
     def initialize(options = {}) 
       @name = options[:name]
       @arel_predicate = options[:arel_predicate]
-      @formatter = options[:formatter]
+      @converter = options[:converter]
       @validator = options[:validator] || lambda { |v| v.respond_to?(:empty?) ? !v.empty? : !v.nil? }
     end 
 
-    def format(value)
-      formatter ? formatter.call(value) : value
+    def convert(value)
+      return value unless converter
+      [value].flatten.map { |v| converter.call(v) }
     end 
 
     def validate(value)
-      validator.call(value)
+      [value].flatten.select { |v| validator.call(v) }.any?
     end 
 
     def self.names
