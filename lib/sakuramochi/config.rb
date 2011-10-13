@@ -57,10 +57,10 @@ module Sakuramochi
 
     config.add PREDICATES[:contains],               :arel_predicate => :matches,        :converter => proc { |v| "%#{v}%" }
     config.add PREDICATES[:contains].map(&_not),    :arel_predicate => :does_not_match, :converter => proc { |v| "%#{v}%" }
-    config.add PREDICATES[:starts_with],            :arel_predicate => :matches,        :converter => proc { |v| "%#{v}" }
-    config.add PREDICATES[:starts_with].map(&_not), :arel_predicate => :does_not_match, :converter => proc { |v| "%#{v}" }
-    config.add PREDICATES[:ends_with],              :arel_predicate => :matches,        :converter => proc { |v| "#{v}%" }
-    config.add PREDICATES[:ends_with].map(&_not),   :arel_predicate => :does_not_match, :converter => proc { |v| "#{v}%" }
+    config.add PREDICATES[:starts_with],            :arel_predicate => :matches,        :converter => proc { |v| "#{v}%" }
+    config.add PREDICATES[:starts_with].map(&_not), :arel_predicate => :does_not_match, :converter => proc { |v| "#{v}%" }
+    config.add PREDICATES[:ends_with],              :arel_predicate => :matches,        :converter => proc { |v| "%#{v}" }
+    config.add PREDICATES[:ends_with].map(&_not),   :arel_predicate => :does_not_match, :converter => proc { |v| "%#{v}" }
     config.add PREDICATES[:in],                     :arel_predicate => :in
     config.add PREDICATES[:in].map(&_not),          :arel_predicate => :not_in
     config.add PREDICATES[:eq],                     :arel_predicate => :eq
