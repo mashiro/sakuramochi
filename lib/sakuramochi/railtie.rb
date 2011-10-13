@@ -7,11 +7,11 @@ module Sakuramochi
   class Railtie < Rails::Railtie
     initializer 'sakuramochi.initialize' do
       ActiveSupport.on_load(:active_record) do
-        initialize
+        Railtie.setup
       end
     end 
 
-    def self.initialize
+    def self.setup
       ActiveRecord::PredicateBuilder.send(:include, Sakuramochi::PredicateBuilder)
     end
   end 
