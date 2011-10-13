@@ -1,6 +1,7 @@
 # Sakuramochi
 
 Sakuramochi is a minimal active record extensions for Rails3.
+This is similar to the ar-extensions gem.
 
 ## Installation
 
