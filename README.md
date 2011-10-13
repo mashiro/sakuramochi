@@ -21,7 +21,7 @@ User.where(:name_contains_all => ['ru', 'ai'])
 # => "SELECT \"users\".* FROM \"users\"  WHERE ((\"users\".\"name\" LIKE '%ru%' AND \"users\".\"name\" LIKE '%ai%'))"
 ```
 
-### Predicates
+## Predicates
 
 * contains
 * starts_with, start_with
@@ -33,7 +33,7 @@ User.where(:name_contains_all => ['ru', 'ai'])
 * lt
 * lte, lteq
 
-### Configration
+## Configration
 
 ```ruby
 Sakuramochi.configure do |config|
