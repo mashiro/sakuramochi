@@ -8,14 +8,14 @@ end
 
 describe Sakuramochi::PredicateBuilder do
   before(:all) do
-    @aira = User.create! :name => 'Aira'
+    @aira = User.create! :name => 'harune aira'
     ['fresh fruit basket', 'munekyun taiken', 'heartful splash',
      'lovely rainbow', 'hirahira hiraku koi no hana', 'crystal splash'
     ].each do |jump|
       Status.create! :text => jump, :user => @aira
     end
 
-    @rizumu = User.create! :name => 'Rizumu'
+    @rizumu = User.create! :name => 'amamiya rizumu'
     ['heartful splash', 'colorful choco parade', 'fun fun heart dive',
      'stardust shower', 'happy macaron spin', 'pop\'n candy rocket'
     ].each do |jump|
