@@ -5,7 +5,8 @@ Sakuramochi is a minimal active record extensions for Rails3.
 ## Installation
 
 ```ruby
-gem 'sakuramochi', :git => 'git://github.com/mashiro/sakuramochi.git'
+gem 'sakuramochi'
+# gem 'sakuramochi', :git => 'git://github.com/mashiro/sakuramochi.git'
 ```
 
 ## Getting started
