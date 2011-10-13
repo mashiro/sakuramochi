@@ -5,23 +5,23 @@
 
 Gem::Specification.new do |s|
   s.name = "sakuramochi"
-  s.version = "0.0.1"
+  s.version = "0.1.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["mashiro"]
-  s.date = "2011-10-11"
+  s.date = "2011-10-13"
   s.description = "Minimal active record extension plugin for Rails 3"
   s.email = "mail@mashiro.org"
   s.extra_rdoc_files = [
     "LICENSE.txt",
-    "README.rdoc"
+    "README.md"
   ]
   s.files = [
     ".document",
     ".rspec",
     "Gemfile",
     "LICENSE.txt",
-    "README.rdoc",
+    "README.md",
     "Rakefile",
     "VERSION",
     "lib/sakuramochi.rb",
@@ -29,11 +29,10 @@ Gem::Specification.new do |s|
     "lib/sakuramochi/predicate.rb",
     "lib/sakuramochi/predicate_builder.rb",
     "lib/sakuramochi/railtie.rb",
-    "lib/sakuramochi/relation.rb",
     "sakuramochi.gemspec",
     "spec/sakuramochi/config_spec.rb",
+    "spec/sakuramochi/predicate_builder_spec.rb",
     "spec/sakuramochi/predicate_spec.rb",
-    "spec/sakuramochi_spec.rb",
     "spec/spec_helper.rb",
     "spec/support/schema.rb"
   ]
