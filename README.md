@@ -51,7 +51,7 @@ Sakuramochi.configure do |config|
     :grouping => true,
     :expand => false,
     :converter => proc { |v| "#{v.first}%#{v.last}" },
-    :validator => proc { |v| true || v.is_a?(Enumerable) && v.to_a.size == 2 }
+    :validator => proc { |v| v.is_a?(Enumerable) && v.to_a.size == 2 }
 end
 
 User.where(:name_eq_amamiya => 'rizumu')

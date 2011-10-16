@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "sakuramochi"
   gem.homepage = "http://github.com/mashiro/sakuramochi"
   gem.license = "MIT"
-  gem.summary = %Q{Minimal active record extension plugin for Rails 3}
-  gem.description = %Q{Minimal active record extension plugin for Rails 3}
+  gem.summary = %Q{Minimal extensions for active record 3}
+  gem.description = %Q{Minimal extensions for active record 3}
   gem.email = "mail@mashiro.org"
   gem.authors = ["mashiro"]
   # dependencies defined in Gemfile
