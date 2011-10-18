@@ -1,5 +1,7 @@
 # Sakuramochi
 
+[![Build Status](https://secure.travis-ci.org/mashiro/sakuramochi.png)](http://travis-ci.org/mashiro/sakuramochi)
+
 Sakuramochi is a minimal extensions for Active Record 3.
 
 This is similar to the ar-extensions gem.
