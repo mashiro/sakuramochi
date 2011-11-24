@@ -19,7 +19,7 @@ module Sakuramochi
 
           if value.is_a?(Hash)
             table = Arel::Table.new(column, engine)
-            build_from_hash(engine, value, table)
+            build_from_hash_with_predicate(engine, value, table)
           else
             column = column.to_s
 
@@ -41,6 +41,8 @@ module Sakuramochi
 
         predicates.flatten.compact
       end
+
+      private
 
       def build_attribute_with_predicate(attribute, value, predicate)
         if predicate.validate(value)
