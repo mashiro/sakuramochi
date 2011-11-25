@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'active_record'
 
 ActiveRecord::Base.configurations = {'test' => {:adapter => 'sqlite3', :database => ':memory:'}}
@@ -25,18 +26,64 @@ class CreateTestTables < ActiveRecord::Migration
   end
 
   def self.seed
-    @aira = User.create! :name => 'harune aira'
-    ['fresh fruit basket', 'munekyun taiken', 'heartful splash',
-     'lovely rainbow', 'hirahira hiraku koi no hana', 'crystal splash'
-    ].each do |jump|
-      Status.create! :text => jump, :user => @aira
-    end
+    items = {
+      '春音あいら' => [
+        'フレッシュフルーツバスケット',
+        'ハートフルスプラッシュ',
+        'カラフルチョコパレード',
+        '胸キュン体験',
+        'スターダストシャワー',
+        'ラブリーレインボー',
+        'ヒラヒラヒラク恋の花',
+        'ドレミファスライダー',
+        'クリスタルスプラッシュ',
+        'ポップンキャンディロケット',
+        'チカラ合わせて！ワンダースイーツShow',
+        'ココロ重ねて！ハートアーチファンタジー',
+        'フライハイチアガール',
+        'チアフルHip Hop Win!',
+        'ドキドキハロウィンナイト',
+        'ビタミンガーデンサンシャイン',
+      ],
+      '天宮りずむ' => [
+        'ハートフルスプラッシュ',
+        'カラフルチョコパレード',
+        'FUNFUNハートダイブ',
+        'スターダストシャワー',
+        'ハッピーマカロンスピン',
+        'ドレミファスライダー',
+        'ポップンキャンディロケット',
+        'ドルフィンビーナル',
+        'チカラ合わせて！ワンダースイーツShow',
+        'ココロ重ねて！ハートアーチファンタジー',
+        'フライハイチアガール',
+        'チアフルHip Hop Win!',
+        'ドキドキハロウィンナイト',
+        'ビタミンガーデンサンシャイン',
+      ],
+      '高峰みおん' => [
+        'スターダストシャワー',
+        'ヒラヒラヒラク恋の花',
+        'ドレミファスライダー',
+        'ゴールデンスターマジック',
+        'ときめきメモリーリーフ',
+        'はちみつキッス',
+        'ココロ重ねて！ハートアーチファンタジー',
+        'フライハイチアガール',
+        'チアフルHip Hop Win!',
+        'ドキドキハロウィンナイト',
+        'ビタミンガーデンサンシャイン',
+      ],
+      '春音うる' => [],
+      '春音える' => [],
+    }
 
-    @rizumu = User.create! :name => 'amamiya rizumu'
-    ['heartful splash', 'colorful choco parade', 'fun fun heart dive',
-     'stardust shower', 'happy macaron spin', 'pop\'n candy rocket'
-    ].each do |jump|
-      Status.create! :text => jump, :user => @rizumu
+    items.each do |name, jumps|
+      User.create! :name => name do |user|
+        jumps.each do |jump|
+          Status.create! :user => user, :text => jump
+        end
+      end
     end
   end
 end

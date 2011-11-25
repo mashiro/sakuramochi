@@ -1,17 +1,29 @@
+# encoding: utf-8
 require 'spec_helper'
 
 describe Sakuramochi::Relation do
   describe '#build_where_with_condition' do
-    before do
-      #@statuses = Status.where([:not, {:text_contains => 'splash'}, :and, {:id => 1}])
-      @statuses = Status.joins(:user).where([
-        :'(', {:users => {:name_contains => 'aira'}}, :or, {:text_contains => 'aira'}, :')', :and,
-        :'(', {:users => {:name_contains => 'rizumu'}}, :or, {:text_contains => 'rizumu'}, :')'
-      ])
-    end
-    #before { @statuses = Status.where([:not, {:text_contains => 'splash'}]) }
-    subject { @statuses }
+    describe 'not' do
+      before { @users = User.where([:not, {:name_contains => 'あいら'}]) }
+      subject { @users }
 
-    it { should have(0).items }
+      it { subject.map(&:name).should_not be_match_all /あいら/ }
+    end
+
+    describe 'and' do
+      before { @users = User.where([{:name_contains => '春音'}, :and, {:name_contains => 'あいら'}]) }
+      subject { @users }
+
+      it { subject.map(&:name).should be_match_all /春音/ }
+      it { subject.map(&:name).should be_match_all /あいら/ }
+      it { subject.map(&:name).should_not be_match_all /うる|える/ }
+    end
+
+    describe 'or' do
+      before { @users = User.where([{:name_contains => 'あいら'}, :or, {:name_contains => 'りずむ'}]) }
+      subject { @users }
+
+      it { subject.map(&:name).should_not be_match_all /みおん/ }
+    end
   end
 end
