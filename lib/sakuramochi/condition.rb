@@ -16,7 +16,7 @@ module Sakuramochi
         end
 
         def inspect
-          "(#{@operator.inspect} #{@left.inspect} #{@right.inspect})"
+          "(#{@operator} #{@left.inspect} #{@right.inspect})"
         end
       end
 
@@ -28,7 +28,7 @@ module Sakuramochi
         end
 
         def inspect
-          "(#{@operator.inspect} #{@value.inspect})"
+          "(#{@operator} #{@value.inspect})"
         end
       end
 
@@ -39,7 +39,7 @@ module Sakuramochi
         end
 
         def inspect
-          "#{@value.inspect}"
+          "#{@value}"
         end
       end
 
@@ -59,13 +59,13 @@ module Sakuramochi
     # term = ["not"] factor
     # factor = array | hash | "(" expression ")"
     class Parser
-      EXPRESSIONS = [:and, :or]
-      TERMS = [:not]
-      PARENTHESES = {:'(' => :')'}
+      EXPRESSIONS = ['and', 'or']
+      TERMS = ['not']
+      PARENTHESES = {'(' => ')'}
 
       def initialize(tokens)
         @tokens = tokens.dup
-        @tokens = @tokens.split(/\s+/) if @tokens.is_a?(String)
+        @tokens = @tokens.split(/\s+/) if @tokens.is_a?(String) # debug
       end
 
       def parse
@@ -75,8 +75,8 @@ module Sakuramochi
       private
 
       def self.indifferenct_key(token)
-        if token.is_a?(Symbol)
-          token.downcase
+        if token.is_a?(String) || token.is_a?(Symbol)
+          token.to_s.downcase
         else
           token
         end
@@ -92,16 +92,16 @@ module Sakuramochi
         self.class.indifferenct_key token
       end
 
-      def accept(*syms)
-        if syms.include?(peek)
+      def accept(*args)
+        if args.include?(peek)
           shift
         else
           nil
         end
       end
 
-      def expect(*syms)
-        if token = accept(*syms)
+      def expect(*args)
+        if token = accept(*args)
           token
         else
           raise UnexpectedError

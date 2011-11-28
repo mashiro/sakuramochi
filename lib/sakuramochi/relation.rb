@@ -14,20 +14,20 @@ module Sakuramochi
       def collapse_conditions(node, other)
         case node
         when Sakuramochi::Condition::Nodes::Expression
-          case node.operator
-          when :and
+          case node.operator.to_s
+          when 'and'
             left = collapse_conditions(node.left, other)
             right = collapse_conditions(node.right, other)
             Arel::Nodes::And.new([left, right])
-          when :or
+          when 'or'
             left = collapse_conditions(node.left, other)
             right = collapse_conditions(node.right, other)
             Arel::Nodes::Or.new(left, right)
           end
 
         when Sakuramochi::Condition::Nodes::Term
-          case node.operator
-          when :not
+          case node.operator.to_s
+          when 'not'
             right = collapse_conditions(node.value, other)
             Arel::Nodes::Not.new(right)
           end
