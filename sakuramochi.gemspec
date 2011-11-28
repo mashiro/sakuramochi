@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "sakuramochi"
-  s.version = "0.2.1"
+  s.version = "0.5.0"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["mashiro"]
-  s.date = "2011-10-16"
+  s.date = "2011-11-28"
   s.description = "Minimal extensions for active record 3"
   s.email = "mail@mashiro.org"
   s.extra_rdoc_files = [
@@ -19,20 +19,26 @@ Gem::Specification.new do |s|
   s.files = [
     ".document",
     ".rspec",
+    ".travis.yml",
     "Gemfile",
     "LICENSE.txt",
     "README.md",
     "Rakefile",
     "VERSION",
     "lib/sakuramochi.rb",
+    "lib/sakuramochi/condition.rb",
     "lib/sakuramochi/config.rb",
     "lib/sakuramochi/predicate.rb",
     "lib/sakuramochi/predicate_builder.rb",
+    "lib/sakuramochi/relation.rb",
     "sakuramochi.gemspec",
+    "spec/sakuramochi/condition_spec.rb",
     "spec/sakuramochi/config_spec.rb",
     "spec/sakuramochi/predicate_builder_spec.rb",
     "spec/sakuramochi/predicate_spec.rb",
+    "spec/sakuramochi/relation_spec.rb",
     "spec/spec_helper.rb",
+    "spec/support/matcher.rb",
     "spec/support/schema.rb"
   ]
   s.homepage = "http://github.com/mashiro/sakuramochi"
@@ -45,30 +51,30 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<activesupport>, [">= 3.0.0"])
-      s.add_runtime_dependency(%q<activerecord>, [">= 3.0.0"])
-      s.add_development_dependency(%q<sqlite3>, ["~> 1.3.4"])
-      s.add_development_dependency(%q<rspec>, ["~> 2.6.0"])
-      s.add_development_dependency(%q<bundler>, ["~> 1.0.0"])
-      s.add_development_dependency(%q<jeweler>, ["~> 1.6.4"])
-      s.add_development_dependency(%q<rcov>, [">= 0"])
+      s.add_runtime_dependency(%q<activesupport>, ["~> 3.0"])
+      s.add_runtime_dependency(%q<activerecord>, ["~> 3.0"])
+      s.add_development_dependency(%q<sqlite3>, [">= 0"])
+      s.add_development_dependency(%q<rspec>, [">= 0"])
+      s.add_development_dependency(%q<rdoc>, [">= 0"])
+      s.add_development_dependency(%q<bundler>, [">= 0"])
+      s.add_development_dependency(%q<jeweler>, [">= 0"])
     else
-      s.add_dependency(%q<activesupport>, [">= 3.0.0"])
-      s.add_dependency(%q<activerecord>, [">= 3.0.0"])
-      s.add_dependency(%q<sqlite3>, ["~> 1.3.4"])
-      s.add_dependency(%q<rspec>, ["~> 2.6.0"])
-      s.add_dependency(%q<bundler>, ["~> 1.0.0"])
-      s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
-      s.add_dependency(%q<rcov>, [">= 0"])
+      s.add_dependency(%q<activesupport>, ["~> 3.0"])
+      s.add_dependency(%q<activerecord>, ["~> 3.0"])
+      s.add_dependency(%q<sqlite3>, [">= 0"])
+      s.add_dependency(%q<rspec>, [">= 0"])
+      s.add_dependency(%q<rdoc>, [">= 0"])
+      s.add_dependency(%q<bundler>, [">= 0"])
+      s.add_dependency(%q<jeweler>, [">= 0"])
     end
   else
-    s.add_dependency(%q<activesupport>, [">= 3.0.0"])
-    s.add_dependency(%q<activerecord>, [">= 3.0.0"])
-    s.add_dependency(%q<sqlite3>, ["~> 1.3.4"])
-    s.add_dependency(%q<rspec>, ["~> 2.6.0"])
-    s.add_dependency(%q<bundler>, ["~> 1.0.0"])
-    s.add_dependency(%q<jeweler>, ["~> 1.6.4"])
-    s.add_dependency(%q<rcov>, [">= 0"])
+    s.add_dependency(%q<activesupport>, ["~> 3.0"])
+    s.add_dependency(%q<activerecord>, ["~> 3.0"])
+    s.add_dependency(%q<sqlite3>, [">= 0"])
+    s.add_dependency(%q<rspec>, [">= 0"])
+    s.add_dependency(%q<rdoc>, [">= 0"])
+    s.add_dependency(%q<bundler>, [">= 0"])
+    s.add_dependency(%q<jeweler>, [">= 0"])
   end
 end
 
