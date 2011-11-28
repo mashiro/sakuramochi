@@ -24,9 +24,9 @@ shared_examples_for 'group node' do |expression|
   its(:expression) { should be_instance_of expression }
 end
 
-describe Sakuramochi::Condition::Parser do
-  extend Sakuramochi::Condition::Nodes
+include Sakuramochi::Condition::Nodes
 
+describe Sakuramochi::Condition::Parser do
   context '1 and 2' do
     before { @node = Sakuramochi::Condition::Parser.new('1 and 2').parse }
     subject { @node }
