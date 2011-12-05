@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = "sakuramochi"
-  s.version = "0.5.0"
+  s.version = "0.5.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["mashiro"]
-  s.date = "2011-11-28"
+  s.date = "2011-12-05"
   s.description = "Minimal extensions for active record 3"
   s.email = "mail@mashiro.org"
   s.extra_rdoc_files = [
