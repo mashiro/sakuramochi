@@ -45,12 +45,8 @@ module Sakuramochi
       end
 
       def build_where_with_condition(opts, other = [])
-        if opts.is_a?(Array) && !opts.first.is_a?(String)
-          ast = Sakuramochi::Condition::Parser.new(opts.dup).parse
-          [collapse_conditions(ast, other)]
-        else
-          build_where_without_condition(opts, other)
-        end
+        ast = Sakuramochi::Condition::Parser.new(opts.dup).parse
+        [collapse_conditions(ast, other)]
       end
     end
 

@@ -25,5 +25,19 @@ describe Sakuramochi::Relation do
 
       it { subject.map(&:name).should_not be_match_all /みおん/ }
     end
+
+    describe 'nested' do
+      before do
+        @users = User.where([
+               [{:name_contains => '春音'}, :and, {:name_contains => 'あいら'}],
+          :or, [{:name_contains => '天宮'}, :and, {:name_contains => 'りずむ'}]
+        ])
+      end
+      subject { @users }
+
+      it { should have(2).items }
+      it { subject.map(&:name).should_not be_match_all /うる|える/ }
+      it { subject.map(&:name).should_not be_match_all /みおん/ }
+    end
   end
 end

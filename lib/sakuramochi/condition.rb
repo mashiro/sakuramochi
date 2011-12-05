@@ -66,6 +66,7 @@ module Sakuramochi
       def initialize(tokens)
         @tokens = tokens.dup
         @tokens = @tokens.split(/\s+/) if @tokens.is_a?(String) # debug
+        @tokens = [@tokens] unless @tokens.is_a?(Array)
       end
 
       def parse
@@ -74,7 +75,11 @@ module Sakuramochi
 
       private
 
-      def self.indifferenct_key(token)
+      def condition?(value)
+        value.is_a?(Array) && !value.first.is_a?(String)
+      end
+
+      def indifferenct_key(token)
         if token.is_a?(String) || token.is_a?(Symbol)
           token.to_s.downcase
         else
@@ -83,13 +88,11 @@ module Sakuramochi
       end
 
       def peek
-        token = @tokens.first
-        self.class.indifferenct_key token
+        indifferenct_key @tokens.first
       end
 
       def shift
-        token = @tokens.shift
-        self.class.indifferenct_key token
+        indifferenct_key @tokens.shift
       end
 
       def accept(*args)
@@ -130,7 +133,11 @@ module Sakuramochi
           expect PARENTHESES[token]
           Nodes::Group.new(node)
         else
-          Nodes::Factor.new(shift)
+          if condition? peek
+            Nodes::Group.new(Sakuramochi::Condition::Parser.new(shift).parse)
+          else
+            Nodes::Factor.new(shift)
+          end
         end
       end
     end
