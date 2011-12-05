@@ -39,5 +39,13 @@ describe Sakuramochi::Relation do
       it { subject.map(&:name).should_not be_match_all /うる|える/ }
       it { subject.map(&:name).should_not be_match_all /みおん/ }
     end
+
+    describe 'with validation' do
+      before { @users = User.where([{:name_contains => nil}, :or, {:name_contains => 'りずむ'}]) }
+      subject { puts @users.to_sql; @users }
+
+      it { subject.map(&:name).should_not be_match_all /あいら|みおん/ }
+    end
+
   end
 end

@@ -18,18 +18,19 @@ module Sakuramochi
           when 'and'
             left = collapse_conditions(node.left, other)
             right = collapse_conditions(node.right, other)
-            Arel::Nodes::And.new([left, right])
+            left && right ? Arel::Nodes::And.new([left, right]) : left || right
+
           when 'or'
             left = collapse_conditions(node.left, other)
             right = collapse_conditions(node.right, other)
-            Arel::Nodes::Or.new(left, right)
+            left && right ? Arel::Nodes::Or.new(left, right) : left || right
           end
 
         when Sakuramochi::Condition::Nodes::Term
           case node.operator.to_s
           when 'not'
             right = collapse_conditions(node.value, other)
-            Arel::Nodes::Not.new(right)
+            Arel::Nodes::Not.new(right) if right
           end
 
         when Sakuramochi::Condition::Nodes::Factor
@@ -40,13 +41,13 @@ module Sakuramochi
 
         when Sakuramochi::Condition::Nodes::Group
           expression = collapse_conditions(node.expression, other)
-          Arel::Nodes::Grouping.new(expression)
+          Arel::Nodes::Grouping.new(expression) if expression
         end
       end
 
       def build_where_with_condition(opts, other = [])
         ast = Sakuramochi::Condition::Parser.new(opts.dup).parse
-        [collapse_conditions(ast, other)]
+        [collapse_conditions(ast, other)].compact
       end
     end
 
