@@ -46,8 +46,12 @@ module Sakuramochi
       end
 
       def build_where_with_condition(opts, other = [])
-        ast = Sakuramochi::Condition::Parser.new(opts.dup).parse
-        [collapse_conditions(ast, other)].compact
+        if Sakuramochi::Condition.condition?(opts)
+          ast = Sakuramochi::Condition::Parser.new(opts.dup).parse
+          [collapse_conditions(ast, other)].compact
+        else
+          build_where_without_condition(opts, other)
+        end
       end
     end
 

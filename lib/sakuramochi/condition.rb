@@ -75,10 +75,6 @@ module Sakuramochi
 
       private
 
-      def condition?(value)
-        value.is_a?(Array) && !value.first.is_a?(String)
-      end
-
       def indifferenct_key(token)
         if token.is_a?(String) || token.is_a?(Symbol)
           token.to_s.downcase
@@ -133,13 +129,17 @@ module Sakuramochi
           expect PARENTHESES[token]
           Nodes::Group.new(node)
         else
-          if condition? peek
+          if Sakuramochi::Condition.condition? peek
             Nodes::Group.new(Sakuramochi::Condition::Parser.new(shift).parse)
           else
             Nodes::Factor.new(shift)
           end
         end
       end
+    end
+
+    def self.condition?(value)
+      value.is_a?(Array) && !value.first.is_a?(String)
     end
 
   end

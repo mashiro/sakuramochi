@@ -3,6 +3,13 @@ require 'spec_helper'
 
 describe Sakuramochi::Relation do
   describe '#build_where_with_condition' do
+    describe 'scalar' do
+      before { @user = User.where(1).first }
+      subject { @user }
+
+      its(:id) { should eq 1 }
+    end
+
     describe 'not' do
       before { @users = User.where([:not, {:name_contains => 'あいら'}]) }
       subject { @users }
