@@ -63,7 +63,6 @@ module Sakuramochi
           value = value.select(value.klass.arel_table[value.klass.primary_key]) if value.select_values.empty?
           attribute.in(value.arel.ast)
         when Array, ActiveRecord::Associations::CollectionProxy
-        when Array, ActiveRecord::Associations::CollectionProxy
           values = value.to_a.map {|x| x.is_a?(ActiveRecord::Base) ? x.id : x}
           ranges, values = values.partition {|v| v.is_a?(Range) || v.is_a?(Arel::Relation)}
 
