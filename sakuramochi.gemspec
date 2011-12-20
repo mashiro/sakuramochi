@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = Sakuramochi::VERSION
   s.authors     = ["mashiro"]
   s.email       = ["mail@mashiro.org"]
-  s.homepage    = ""
+  s.homepage    = "https://github.com/mashiro/sakuramochi"
   s.summary     = %q{Minimal extensions for ActiveRecord 3}
   s.description = %q{Predicates and conditions that extends to the ActiveRecord 3}
 
