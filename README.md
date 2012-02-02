@@ -1,6 +1,6 @@
 # Sakuramochi
-
 [![Build Status](https://secure.travis-ci.org/mashiro/sakuramochi.png)](http://travis-ci.org/mashiro/sakuramochi)
+[![Dependency Status](https://gemnasium.com/mashiro/sakuramochi.png)](https://gemnasium.com/mashiro/sakuramochi)
 
 Sakuramochi is a minimal extensions for Active Record 3.
 
@@ -84,4 +84,3 @@ User.where(:name_surrounds_with => ["ama", "umu"])
 ## Copyright
 
 Copyright (c) 2011 mashiro
-
