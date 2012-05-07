@@ -10,12 +10,12 @@ module Sakuramochi
   autoload :Condition,        'sakuramochi/condition'
   autoload :Relation,         'sakuramochi/relation'
 
-  def self.configure(&block)
-    yield @config ||= Sakuramochi::Configuration.new
+  def self.config
+    @config ||= Sakuramochi::Configuration.new
   end
 
-  def self.config
-    @config
+  def self.configure(&block)
+    yield config
   end
 
   ActiveSupport.on_load(:active_record) do
