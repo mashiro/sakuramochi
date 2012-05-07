@@ -5,6 +5,7 @@ describe Sakuramochi::PredicateBuilder do
   describe 'matches' do
     before do
       Sakuramochi.configure do |config|
+        config.clear
         config.add :contains, :arel_predicate => :matches, :converter => proc { |v| "%#{v}%" }
       end
       @statuses = Status.where(key => value)

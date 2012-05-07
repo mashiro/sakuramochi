@@ -86,6 +86,7 @@ describe Sakuramochi::Predicate do
     context 'config.add :test' do
       before do
         Sakuramochi.configure do |config|
+          config.clear
           config.add :test
         end
       end

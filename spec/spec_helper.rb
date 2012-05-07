@@ -12,4 +12,7 @@ RSpec.configure do |config|
     CreateTestTables.up
     CreateTestTables.seed
   end
+  config.after do
+    Sakuramochi.config.restore
+  end
 end

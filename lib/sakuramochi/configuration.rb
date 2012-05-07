@@ -6,6 +6,7 @@ module Sakuramochi
 
     def initialize
       @predicates = {}
+      restore
     end 
 
     def add(*args)
@@ -26,5 +27,41 @@ module Sakuramochi
         end
       end 
     end 
+
+    def clear
+      @predicates.clear
+    end
+
+    def restore
+      clear
+
+      names = {
+        :contains =>    [:contains],
+        :starts_with => [:starts_with, :start_with],
+        :ends_with =>   [:ends_with, :end_with],
+        :in =>          [:in],
+        :eq =>          [:eq, :equal, :equals],
+        :gt =>          [:gt],
+        :gte =>         [:gte, :gteq],
+        :lt =>          [:lt],
+        :lte =>         [:lte, :lteq],
+      }
+      negative = proc { |p| "not_#{p}" }
+
+      add names[:contains],                   :arel_predicate => :matches,        :converter => proc { |v| "%#{v}%" }
+      add names[:contains].map(&negative),    :arel_predicate => :does_not_match, :converter => proc { |v| "%#{v}%" }
+      add names[:starts_with],                :arel_predicate => :matches,        :converter => proc { |v| "#{v}%" }
+      add names[:starts_with].map(&negative), :arel_predicate => :does_not_match, :converter => proc { |v| "#{v}%" }
+      add names[:ends_with],                  :arel_predicate => :matches,        :converter => proc { |v| "%#{v}" }
+      add names[:ends_with].map(&negative),   :arel_predicate => :does_not_match, :converter => proc { |v| "%#{v}" }
+      add names[:in],                         :arel_predicate => :in
+      add names[:in].map(&negative),          :arel_predicate => :not_in
+      add names[:eq],                         :arel_predicate => :eq
+      add names[:eq].map(&negative), :ne,     :arel_predicate => :not_eq
+      add names[:gt],                         :arel_predicate => :gt
+      add names[:gte],                        :arel_predicate => :gteq
+      add names[:lt],                         :arel_predicate => :lt
+      add names[:lte],                        :arel_predicate => :lteq
+    end
   end 
 end
