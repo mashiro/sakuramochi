@@ -7,35 +7,38 @@ module Sakuramochi
 
     included do
       unless respond_to? :build
+        model_class = defined?(ActiveRecord::Model) ? ActiveRecord::Model : ActiveRecord::Base
+
         def self.build(attribute, value)
           case value
           when ActiveRecord::Relation
             value = value.select(value.klass.arel_table[value.klass.primary_key]) if value.select_values.empty?
             attribute.in(value.arel.ast)
           when Array, ActiveRecord::Associations::CollectionProxy
-            values = value.to_a.map {|x| x.is_a?(ActiveRecord::Model) ? x.id : x}
-            ranges, values = values.partition {|v| v.is_a?(Range) || v.is_a?(Arel::Relation)}
+            values = value.to_a.map {|x| x.is_a?(model_class) ? x.id : x}
+            ranges, values = values.partition {|v| v.is_a?(Range)}
 
-            array_predicates = ranges.map {|range| attribute.in(range)}
-
-            if values.include?(nil)
+            values_predicate = if values.include?(nil)
               values = values.compact
+
               case values.length
               when 0
-                array_predicates << attribute.eq(nil)
+                attribute.eq(nil)
               when 1
-                array_predicates << attribute.eq(values.first).or(attribute.eq(nil))
+                attribute.eq(values.first).or(attribute.eq(nil))
               else
-                array_predicates << attribute.in(values).or(attribute.eq(nil))
+                attribute.in(values).or(attribute.eq(nil))
               end
             else
-              array_predicates << attribute.in(values)
+              attribute.in(values)
             end
 
-            array_predicates.inject {|composite, predicate| composite.or(predicate)}
-          when Range, Arel::Relation
+            array_predicates = ranges.map { |range| attribute.in(range) }
+            array_predicates << values_predicate
+            array_predicates.inject { |composite, predicate| composite.or(predicate) }
+          when Range
             attribute.in(value)
-          when ActiveRecord::Model
+          when model_class
             attribute.eq(value.id)
           when Class
             # FIXME: I think we need to deprecate this behavior
@@ -54,7 +57,7 @@ module Sakuramochi
 
     module ClassMethods
       def build_from_hash_with_predicate(engine, attributes, default_table)
-        predicates = attributes.map do |column, value|
+        attributes.map do |column, value|
           table = default_table
 
           if value.is_a?(Hash)
@@ -77,9 +80,7 @@ module Sakuramochi
               build(attribute, value)
             end
           end
-        end
-
-        predicates.flatten.compact
+        end.flatten
       end
 
       private
