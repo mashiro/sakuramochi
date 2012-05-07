@@ -3,7 +3,6 @@ require 'spec_helper'
 describe Sakuramochi::Configuration do
   before do
     Sakuramochi.configure do |config|
-      config.clear
       @config = config
     end
   end
@@ -12,18 +11,6 @@ describe Sakuramochi::Configuration do
   describe '#configure' do
     it { should be_an_instance_of Sakuramochi::Configuration }
     its(:object_id) { should eq Sakuramochi.config.object_id }
-  end
-
-  describe '#clear' do
-    before do
-      @config.add :test1
-      @config.add :test2
-      @config.add :test3, :test4
-      @config.clear
-    end
-    subject { @config.predicates }
-
-    it { should be_empty }
   end
 
   describe '#add' do

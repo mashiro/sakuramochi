@@ -1,5 +1,3 @@
-require 'sakuramochi/config'
-
 module Sakuramochi
   class Predicate
     attr_reader :name, :arel_predicate, :expand, :converter, :validator
@@ -16,7 +14,7 @@ module Sakuramochi
     def convert(value)
       return value unless @converter
       if @expand
-        Predicate.as_a(value).map { |v| @converter.call(v) }
+        Array(value).map { |v| @converter.call(v) }
       else
         @converter.call(value)
       end
@@ -24,15 +22,11 @@ module Sakuramochi
 
     def validate(value)
       if @expand
-        Predicate.as_a(value).select { |v| @validator.call(v) }.any?
+        Array(value).select { |v| @validator.call(v) }.any?
       else
         @validator.call(value)
       end
     end 
-
-    def self.as_a(value)
-      value.is_a?(Enumerable) ? value.to_a : [value]
-    end
 
     def self.names
       Sakuramochi.config.predicates.keys
