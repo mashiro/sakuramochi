@@ -7,9 +7,9 @@ module Sakuramochi
 
     included do
       unless respond_to? :build
-        model_class = defined?(ActiveRecord::Model) ? ActiveRecord::Model : ActiveRecord::Base
-
         def self.build(attribute, value)
+          model_class = defined?(ActiveRecord::Model) ? ActiveRecord::Model : ActiveRecord::Base
+
           case value
           when ActiveRecord::Relation
             value = value.select(value.klass.arel_table[value.klass.primary_key]) if value.select_values.empty?
