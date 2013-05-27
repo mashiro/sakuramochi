@@ -8,37 +8,31 @@ module Sakuramochi
     included do
       unless respond_to? :build
         def self.build(attribute, value)
-          model_class = defined?(ActiveRecord::Model) ? ActiveRecord::Model : ActiveRecord::Base
-
           case value
           when ActiveRecord::Relation
             value = value.select(value.klass.arel_table[value.klass.primary_key]) if value.select_values.empty?
             attribute.in(value.arel.ast)
           when Array, ActiveRecord::Associations::CollectionProxy
-            values = value.to_a.map {|x| x.is_a?(model_class) ? x.id : x}
-            ranges, values = values.partition {|v| v.is_a?(Range)}
+            values = value.to_a.map {|x| x.is_a?(ActiveRecord::Base) ? x.id : x}
+            ranges, values = values.partition {|v| v.is_a?(Range) || v.is_a?(Arel::Relation)}
 
-            values_predicate = if values.include?(nil)
+            array_predicates = ranges.map {|range| attribute.in(range)}
+
+            if values.include?(nil)
               values = values.compact
-
-              case values.length
-              when 0
-                attribute.eq(nil)
-              when 1
-                attribute.eq(values.first).or(attribute.eq(nil))
+              if values.empty?
+                array_predicates << attribute.eq(nil)
               else
-                attribute.in(values).or(attribute.eq(nil))
+                array_predicates << attribute.in(values.compact).or(attribute.eq(nil))
               end
             else
-              attribute.in(values)
+              array_predicates << attribute.in(values)
             end
 
-            array_predicates = ranges.map { |range| attribute.in(range) }
-            array_predicates << values_predicate
-            array_predicates.inject { |composite, predicate| composite.or(predicate) }
-          when Range
+            array_predicates.inject {|composite, predicate| composite.or(predicate)}
+          when Range, Arel::Relation
             attribute.in(value)
-          when model_class
+          when ActiveRecord::Base
             attribute.eq(value.id)
           when Class
             # FIXME: I think we need to deprecate this behavior
@@ -56,17 +50,22 @@ module Sakuramochi
     end
 
     module ClassMethods
-      def build_from_hash_with_predicate(engine, attributes, default_table)
-        attributes.map do |column, value|
+      def build_from_hash_with_predicate(engine, attributes, default_table, allow_table_name = true)
+        predicates = attributes.map do |column, value|
           table = default_table
 
-          if value.is_a?(Hash)
+          if allow_table_name && value.is_a?(Hash)
             table = Arel::Table.new(column, engine)
-            build_from_hash_with_predicate(engine, value, table)
+
+            if value.empty?
+              '1 = 2'
+            else
+              build_from_hash_with_predicate(engine, value, table, false)
+            end
           else
             column = column.to_s
 
-            if column.include?('.')
+            if allow_table_name && column.include?('.')
               table_name, column = column.split('.', 2)
               table = Arel::Table.new(table_name, engine)
             end 
@@ -80,7 +79,9 @@ module Sakuramochi
               build(attribute, value)
             end
           end
-        end.flatten
+        end
+
+        predicates.flatten
       end
 
       private
