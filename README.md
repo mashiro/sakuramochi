@@ -2,7 +2,7 @@
 [![Build Status](https://secure.travis-ci.org/mashiro/sakuramochi.png)](http://travis-ci.org/mashiro/sakuramochi)
 [![Dependency Status](https://gemnasium.com/mashiro/sakuramochi.png)](https://gemnasium.com/mashiro/sakuramochi)
 
-Sakuramochi is a minimal extensions for Active Record 3.
+Sakuramochi is a minimal extensions for Active Record 4.
 
 This is similar to the ar-extensions gem.
 
